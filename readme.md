@@ -15,8 +15,8 @@ Adding between existing elements as shown in the example below when the pointer 
 <img src="https://github.com/Muddz/Undo-Redo-Algorithm/blob/master/src/main/resources/Graphic%20elements%206.png" width="70%">
 
 ## Performance
-´UndoRedoList´ is a linear data structure and has slighty better performance than Java's LinkedList.
-The following is the *time-complexity* for the most important methods in ´UndoRedoList´
+`UndoRedoList` is a linear data structure and has slighty better performance than Java's LinkedList.
+The following is the *time-complexity* for the most important methods in `UndoRedoList`
 
 - `add()` is always *O(1)* when the pointer is at the end of the list 
 - Inserting between existing elements gives a time-complexity of *O(n)*
