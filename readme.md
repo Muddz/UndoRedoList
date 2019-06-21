@@ -1,8 +1,8 @@
 # UndoRedoList
 
-An undo-redo data structure is based on the concepts of `DoublyLinkedList` and behaves exactly the same way as undo-redo features do in for example Photoshop and Microsoft Word. 
+An undo-redo data structure based on the concepts of `DoublyLinkedList` and behaves exactly the same way as undo-redo features do in for example Photoshop and Microsoft Word. 
 
-[Regret](https://github.com/Muddz/Regret) an Android library is based on this algorithm.
+[Regret](https://github.com/Muddz/Regret) an Android library is based on this data structure.
 
 ## How it works
 
@@ -10,13 +10,17 @@ The list adds elements in sequential order as a `LinkedList` would do when the p
 
 ### Adding between existing elements 
 
-Adding between existing elements as shown in the example below when the pointer is on *element-2* will result in all elements to the right side of *element-2* being deleted and the new *element-6* taking the end position of the list
+Adding between existing elements as shown in the example below when the pointer is on *element-2* will result in all elements to the right side of *element-2* being deleted and the new *element-6* taking the end-position of the list
 
 <img src="https://github.com/Muddz/Undo-Redo-Algorithm/blob/master/src/main/resources/Graphic%20elements%206.png" width="70%">
 
 ## Performance
+´UndoRedoList´ is a linear data structure and has slighty better performance than Java's LinkedList.
+The following is the *time-complexity* for the most important methods in ´UndoRedoList´
 
-The performance of `add()`,  `undo()`, `redo()` is all *O(n)* since traversal and adding is all linear. We can never jump more than the next or previous node in the data structure. 
+- `add()` is always *O(1)* when the pointer is at the end of the list 
+- Inserting between existing elements gives a time-complexity of *O(n)*
+- Traversing the list with 'undo()' or ´redo()´ is of time-complexity *O(n)*
 
 
 ## License
