@@ -35,7 +35,7 @@ public class UndoRedoList<E> {
     }
 
     /**
-     * Adds an element to the collection
+     * Adds an element to the list
      */
     public void add(E element) {
         Node newNode = new Node(element);
@@ -67,7 +67,7 @@ public class UndoRedoList<E> {
     }
 
     /**
-     * @return The next element in the collection
+     * @return The next element in the list
      */
     public E redo() {
         if (pointer.next == null) {
@@ -80,7 +80,7 @@ public class UndoRedoList<E> {
     }
 
     /**
-     * @return The previous element in the collection
+     * @return The previous element in the list
      */
     public E undo() {
         if (pointer.prev == null) {
@@ -107,14 +107,14 @@ public class UndoRedoList<E> {
     }
 
     /**
-     * @return The size of the collection
+     * @return The size of the list
      */
     public int size() {
         return size;
     }
 
     /**
-     * @return A boolean for whether the collection is empty or not
+     * @return A boolean for whether the list is empty or not
      */
     public boolean isEmpty() {
         return size == 0;
@@ -122,7 +122,7 @@ public class UndoRedoList<E> {
 
 
     /**
-     * Deletes all elements in the collection and sets the size to 0
+     * Deletes all elements in the list and sets the size to 0
      */
     public void clear() {
         head = null;
@@ -133,7 +133,7 @@ public class UndoRedoList<E> {
 
 
     /**
-     * @return A string representation of all elements in the collection
+     * @return A string representation of all elements in the list
      */
     public String toString() {
         StringBuilder sb = new StringBuilder().append('[');

@@ -15,7 +15,6 @@ class UndoRedoTest {
         }
     }
 
-
     @Test
     void testAddBetweenElements() {
         int newElement = 6;
@@ -28,9 +27,9 @@ class UndoRedoTest {
 
         Assertions.assertFalse(undoRedo.canRedo());
         Assertions.assertEquals(6,undoRedo.getCurrent());
-        Assertions.assertEquals(3,undoRedo.size());
         Assertions.assertEquals(2,undoRedo.undo());
         Assertions.assertEquals(1,undoRedo.undo());
+        Assertions.assertEquals(3,undoRedo.size());
     }
 
     @Test
