@@ -33,6 +33,12 @@ class UndoRedoTest {
         Assertions.assertEquals(1,undoRedo.undo());
     }
 
+    @Test
+    void testGetCurrent() {
+        Assertions.assertEquals(5, undoRedo.getCurrent());
+        undoRedo.undo();
+        Assertions.assertEquals(4, undoRedo.getCurrent());
+    }
 
     @Test
     void testRedo() {
@@ -46,13 +52,6 @@ class UndoRedoTest {
     void testUndo() {
         Assertions.assertEquals(4, undoRedo.undo());
         Assertions.assertEquals(3, undoRedo.undo());
-    }
-
-    @Test
-    void testGetCurrent() {
-        Assertions.assertEquals(5, undoRedo.getCurrent());
-        undoRedo.undo();
-        Assertions.assertEquals(4, undoRedo.getCurrent());
     }
 
     @Test
