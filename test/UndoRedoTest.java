@@ -15,45 +15,29 @@ class UndoRedoTest {
         }
     }
 
-
-    @Test
-    void testAddOnFirstElement() {
-        int newElement = 6;
-        while (undoRedo.canUndo()) {
-            undoRedo.undo();
-        }
-
-        undoRedo.add(newElement);
-        Assertions.assertFalse(undoRedo.canRedo());
-        Assertions.assertEquals(newElement, undoRedo.getCurrent());
-        Assertions.assertEquals(1, undoRedo.undo());
-        Assertions.assertEquals(2, undoRedo.size());
-        Assertions.assertFalse(undoRedo.canUndo());
-    }
-
     @Test
     void testAddBetweenElements() {
         int newElement = 6;
         while (undoRedo.canUndo()) {
-            if (undoRedo.undo() == 3) {
+            if (undoRedo.undo() == 2) {
                 break;
             }
         }
-
-        System.out.println("Before: " + undoRedo.toString());
         undoRedo.add(newElement);
 
         Assertions.assertFalse(undoRedo.canRedo());
-        Assertions.assertEquals(newElement, undoRedo.getCurrent());
-        Assertions.assertEquals(3, undoRedo.undo());
-        Assertions.assertEquals(2, undoRedo.undo());
-        Assertions.assertEquals(1, undoRedo.undo());
-        Assertions.assertEquals(4,undoRedo.size());
-        Assertions.assertFalse(undoRedo.canUndo());
-
-        System.out.println("After: " + undoRedo.toString());
+        Assertions.assertEquals(6,undoRedo.getCurrent());
+        Assertions.assertEquals(2,undoRedo.undo());
+        Assertions.assertEquals(1,undoRedo.undo());
+        Assertions.assertEquals(3,undoRedo.size());
     }
 
+    @Test
+    void testGetCurrent() {
+        Assertions.assertEquals(5, undoRedo.getCurrent());
+        undoRedo.undo();
+        Assertions.assertEquals(4, undoRedo.getCurrent());
+    }
 
     @Test
     void testRedo() {
@@ -67,13 +51,6 @@ class UndoRedoTest {
     void testUndo() {
         Assertions.assertEquals(4, undoRedo.undo());
         Assertions.assertEquals(3, undoRedo.undo());
-    }
-
-    @Test
-    void testGetCurrent() {
-        Assertions.assertEquals(5, undoRedo.getCurrent());
-        undoRedo.undo();
-        Assertions.assertEquals(4, undoRedo.getCurrent());
     }
 
     @Test
