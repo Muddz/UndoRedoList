@@ -43,8 +43,8 @@ public class UndoRedoList<E> {
             head = newNode;
         } else {
             shouldRefreshSize = pointer.next != null;
-            newNode.prev = pointer;
             pointer.next = newNode;
+            newNode.prev = pointer;
         }
 
         pointer = newNode;
