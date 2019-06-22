@@ -1,27 +1,11 @@
 import java.util.NoSuchElementException;
 
-/*
- *       Copyright 2019 Muddi Walid
- *       Licensed under the Apache License, Version 2.0 (the "License");
- *       you may not use this file except in compliance with the License.
- *       You may obtain a copy of the License at
- *
- *       http://www.apache.org/licenses/LICENSE-2.0
- *
- *       Unless required by applicable law or agreed to in writing, software
- *       distributed under the License is distributed on an "AS IS" BASIS,
- *       WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *       See the License for the specific language governing permissions and
- *       limitations under the License.
- */
-
-public class UndoRedoList<E> {
-
+public class OldRedo<E> {
     private Node head;
     private Node tail;
     private Node pointer;
-    private int pointerIndex;
     private int size;
+    private boolean shouldRefreshSize;
 
 
     private class Node {
@@ -42,15 +26,18 @@ public class UndoRedoList<E> {
         if (head == null) {
             head = newNode;
         } else {
+            shouldRefreshSize = pointer.next != null;
             pointer.next = newNode;
             newNode.prev = pointer;
         }
 
-
         pointer = newNode;
         tail = newNode;
-        pointerIndex++;
-        size = pointerIndex;
+        if (shouldRefreshSize) {
+            refreshSize();
+        } else {
+            size++;
+        }
     }
 
     /**
@@ -70,7 +57,7 @@ public class UndoRedoList<E> {
         if (pointer.next == null) {
             throw new NoSuchElementException();
         }
-        pointerIndex++;
+
         Node next = pointer.next;
         pointer = next;
         return next.element;
@@ -83,7 +70,6 @@ public class UndoRedoList<E> {
         if (pointer.prev == null) {
             throw new NoSuchElementException();
         }
-        pointerIndex--;
         Node previousNode = pointer.prev;
         pointer = previousNode;
         return previousNode.element;
@@ -118,6 +104,7 @@ public class UndoRedoList<E> {
         return size == 0;
     }
 
+
     /**
      * Deletes all elements in the list and sets the size to 0
      */
@@ -126,7 +113,6 @@ public class UndoRedoList<E> {
         tail = null;
         pointer = null;
         size = 0;
-        pointerIndex = 0;
     }
 
 
@@ -144,6 +130,19 @@ public class UndoRedoList<E> {
             }
         }
         return sb.append(']').toString();
+    }
+
+    /*
+     This method is only called if we're adding an element between two existing elements.
+     */
+    private void refreshSize() {
+        size = 0;
+        Node tempHead = head;
+        while (tempHead != null) {
+            tempHead = tempHead.next;
+            size++;
+        }
+        shouldRefreshSize = false;
     }
 }
 

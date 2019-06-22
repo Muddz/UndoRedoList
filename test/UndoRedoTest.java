@@ -6,30 +6,34 @@ class UndoRedoTest {
 
     private int[] elements = {1, 2, 3, 4, 5};
     private UndoRedoList<Integer> undoRedo;
+    private OldRedo<Integer> oldRedo;
 
     @BeforeEach
     void setUp() {
         undoRedo = new UndoRedoList<>();
+        oldRedo = new OldRedo<>();
         for (int i : elements) {
             undoRedo.add(i);
+            oldRedo.add(i);
         }
     }
 
     @Test
     void testAddBetweenElements() {
         int newElement = 6;
+
         while (undoRedo.canUndo()) {
             if (undoRedo.undo() == 2) {
                 break;
             }
         }
-        undoRedo.add(newElement);
 
+        undoRedo.add(newElement);
         Assertions.assertFalse(undoRedo.canRedo());
-        Assertions.assertEquals(6,undoRedo.getCurrent());
-        Assertions.assertEquals(2,undoRedo.undo());
-        Assertions.assertEquals(1,undoRedo.undo());
-        Assertions.assertEquals(3,undoRedo.size());
+        Assertions.assertEquals(6, undoRedo.getCurrent());
+        Assertions.assertEquals(2, undoRedo.undo());
+        Assertions.assertEquals(1, undoRedo.undo());
+        Assertions.assertEquals(3, undoRedo.size());
     }
 
     @Test
