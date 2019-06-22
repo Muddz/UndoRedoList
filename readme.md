@@ -8,7 +8,7 @@ An undo-redo data structure based on the concepts of `DoublyLinkedList` and beha
 
 The list adds elements in sequential order as a `LinkedList` would do when the pointer is standing at end of the list.
 
-Adding between existing elements as shown in the example below when the pointer is on *element-2* will result in all elements to the right side of *element-2* being deleted and the new *element-6* taking the end-position of the list
+Adding between existing elements as shown in the example below when the pointer is at *element-2* will result in all elements to the right of *element-2* being deleted and the new *element-6* taking the end-position of the list
 
 <img src="https://github.com/Muddz/UndoRedoList/blob/master/src/main/resources/AddBetweenElements.png" width="70%">
 
