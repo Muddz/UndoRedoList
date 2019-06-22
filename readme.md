@@ -16,9 +16,8 @@ Adding between existing elements as shown in the example below when the pointer 
 `UndoRedoList` is a linear data structure and has similar performance as Java's LinkedList.
 The following is the *time-complexity* for the most important methods in `UndoRedoList`
 
-- `add()` is always *O(1)* when the pointer is at the end of the list 
-- Inserting between existing elements gives a time-complexity of *O(n)*
-- Traversing the list with `undo()` or `redo()` is of time-complexity *O(n)*
+- `add()` is always *O(1)* regardless of the pointer position
+- Traversing the list with `undo()` or `redo()` is *O(1)* because we can only traverse to the next or previous node
 
 
 ## License
