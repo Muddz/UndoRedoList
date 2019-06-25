@@ -1,4 +1,4 @@
-# benchmark.UndoRedoList
+# UndoRedoList
 
 An undo-redo data structure based on the concepts of `DoublyLinkedList` and behaves exactly the same way as undo-redo features do in for example Photoshop and Microsoft Word. 
 
@@ -10,11 +10,11 @@ The list adds elements in sequential order as a `LinkedList` would do when the p
 
 Adding between existing elements as shown in the example below when the pointer is at *element-2* will result in all elements to the right of *element-2* being deleted and the new *element-6* taking the end-position of the list
 
-<img src="https://github.com/Muddz/benchmark.UndoRedoList/blob/master/src/main/resources/AddBetweenElements.png" width="70%">
+<img src="https://github.com/Muddz/UndoRedoList/blob/master/src/main/resources/AddBetweenElements.png" width="70%">
 
 ## Performance
-`benchmark.UndoRedoList` is a linear data structure and has similar performance as Java's LinkedList.
-The following is the *time-complexity* for the most important methods in `benchmark.UndoRedoList`
+`UndoRedoList` is a linear data structure and has similar performance as Java's LinkedList.
+The following is the *time-complexity* for the most important methods in `UndoRedoList`
 
 - `add()` is always *O(1)* regardless of the pointer position
 - `undo()` or `redo()` is *O(1)* because we can only traverse to the first next or previous node
