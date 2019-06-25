@@ -6,15 +6,12 @@ class UndoRedoTest {
 
     private int[] elements = {1, 2, 3, 4, 5};
     private UndoRedoList<Integer> undoRedo;
-    private OldRedo<Integer> oldRedo;
 
     @BeforeEach
     void setUp() {
         undoRedo = new UndoRedoList<>();
-        oldRedo = new OldRedo<>();
         for (int i : elements) {
             undoRedo.add(i);
-            oldRedo.add(i);
         }
     }
 

@@ -42,8 +42,8 @@ public class UndoRedoList<E> {
         if (head == null) {
             head = newNode;
         } else {
-            pointer.next = newNode;
             newNode.prev = pointer;
+            pointer.next = newNode;
         }
 
 
