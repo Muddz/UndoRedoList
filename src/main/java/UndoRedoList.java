@@ -45,8 +45,7 @@ public class UndoRedoList<E> {
             newNode.prev = pointer;
             pointer.next = newNode;
         }
-
-
+        
         pointer = newNode;
         tail = newNode;
         pointerIndex++;
