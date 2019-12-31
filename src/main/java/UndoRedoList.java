@@ -108,11 +108,10 @@ public class UndoRedoList {
         if (pointer.next != null) {
             Node tempPointer = pointer;
             pointer = pointer.next;
+            pointerIndex++;
             if (tempPointer.action.key.equals(pointer.action.key)) {
-                pointerIndex++;
                 return pointer.action;
             } else if (pointer.next != null) {
-                pointerIndex++;
                 pointer = pointer.next;
                 return pointer.action;
             }
@@ -129,11 +128,10 @@ public class UndoRedoList {
         if (pointer.prev != null) {
             Node tempPointer = pointer;
             pointer = pointer.prev;
+            pointerIndex--;
             if (tempPointer.action.key.equals(pointer.action.key)) {
-                pointerIndex--;
                 return pointer.action;
             } else if (pointer.prev != null) {
-                pointerIndex--;
                 pointer = pointer.prev;
                 return pointer.action;
             }
@@ -178,7 +176,6 @@ public class UndoRedoList {
         size = 0;
         pointerIndex = 0;
     }
-
 
     /**
      * @return a string representation of all elements in the collection
