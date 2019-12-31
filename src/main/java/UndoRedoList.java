@@ -1,3 +1,5 @@
+import com.sun.istack.internal.NotNull;
+
 import java.util.NoSuchElementException;
 
 /*
@@ -15,114 +17,163 @@ import java.util.NoSuchElementException;
  *       limitations under the License.
  */
 
-public class UndoRedoList<E> {
+/**
+ * @author Muddi Walid
+ * https://github.com/Muddz/UndoRedoList
+ */
+
+public class UndoRedoList {
 
     private Node head;
-    private Node tail;
     private Node pointer;
     private int pointerIndex;
     private int size;
 
-
     private class Node {
-        E element;
+        Action action;
         Node next = null;
         Node prev = null;
 
-        Node(E element) {
-            this.element = element;
+        Node(Action action) {
+            this.action = action;
         }
     }
 
     /**
-     * Adds an element to the list
+     * Adds an element to the collection
      */
-    public void add(E element) {
-        Node newNode = new Node(element);
-        if (head == null) {
-            head = newNode;
+    public void add(@NotNull String key, @NotNull Object currentValue, @NotNull Object newValue) {
+        Node currentNode = new Node(new Action(key, currentValue));
+        Node newNode = new Node(new Action(key, newValue));
+
+        if (head == null || pointer == head) {
+            currentNode.next = newNode;
+            newNode.prev = currentNode;
+            head = currentNode;
+            pointerIndex = 2;
         } else {
-            newNode.prev = pointer;
-            pointer.next = newNode;
+            if (pointer.action.key.equals(currentNode.action.key)) {
+                newNode.prev = pointer;
+                pointer.next = newNode;
+                pointerIndex++;
+            } else {
+                currentNode.prev = pointer;
+                pointer.next = currentNode;
+                currentNode.next = newNode;
+                newNode.prev = currentNode;
+                pointerIndex += 2;
+            }
         }
-        
-        pointer = newNode;
-        tail = newNode;
-        pointerIndex++;
+
         size = pointerIndex;
+        pointer = newNode;
     }
 
     /**
-     * @return The current element which is pointed at
+     * @eturns the previous (@link #Action) object without moving the pointer
      */
-    public E getCurrent() {
+    public Action getPrevious() {
         if (pointer == null) {
             throw new NoSuchElementException();
         }
-        return pointer.element;
+        return pointer.prev.action;
     }
 
     /**
-     * @return The next element in the list
+     * @eturns the next (@link #Action) object without moving the pointer
      */
-    public E redo() {
-        if (pointer.next == null) {
+    public Action getNext() {
+        if (pointer == null) {
             throw new NoSuchElementException();
         }
-        pointerIndex++;
-        Node next = pointer.next;
-        pointer = next;
-        return next.element;
+        return pointer.next.action;
     }
 
     /**
-     * @return The previous element in the list
+     * @return the current (@link #Action) object which the pointer is pointing at
      */
-    public E undo() {
-        if (pointer.prev == null) {
+    public Action getCurrent() {
+        if (pointer == null) {
             throw new NoSuchElementException();
         }
-        pointerIndex--;
-        Node previousNode = pointer.prev;
-        pointer = previousNode;
-        return previousNode.element;
+        return pointer.action;
     }
 
+    /**
+     * Moves the pointer one step forward
+     *
+     * @return Returns the next (@link #Action) object
+     */
+    public Action redo() {
+        if (pointer.next != null) {
+            Node tempPointer = pointer;
+            pointer = pointer.next;
+            if (tempPointer.action.key.equals(pointer.action.key)) {
+                pointerIndex++;
+                return pointer.action;
+            } else if (pointer.next != null) {
+                pointerIndex++;
+                pointer = pointer.next;
+                return pointer.action;
+            }
+        }
+        return null;
+    }
 
     /**
-     * @return A boolean for whether a next element exists
+     * Moves the pointer one step backwards
+     *
+     * @return Returns the previous (@link #Action) object
+     */
+    public Action undo() {
+        if (pointer.prev != null) {
+            Node tempPointer = pointer;
+            pointer = pointer.prev;
+            if (tempPointer.action.key.equals(pointer.action.key)) {
+                pointerIndex--;
+                return pointer.action;
+            } else if (pointer.prev != null) {
+                pointerIndex--;
+                pointer = pointer.prev;
+                return pointer.action;
+            }
+        }
+        return null;
+    }
+
+    /**
+     * @return a boolean for whether a next element exists
      */
     public boolean canRedo() {
-        return pointer.next != null;
+        return pointer != null && pointer.next != null;
     }
 
     /**
-     * @return A boolean for whether a previous element exists
+     * @return a boolean for whether a previous element exists
      */
     public boolean canUndo() {
-        return pointer.prev != null;
+        return pointer != null && pointer.prev != null;
     }
 
     /**
-     * @return The size of the list
+     * @return the size of the list
      */
-    public int size() {
+    public int getSize() {
         return size;
     }
 
     /**
-     * @return A boolean for whether the list is empty or not
+     * @return a boolean for whether the collection is empty or not
      */
     public boolean isEmpty() {
         return size == 0;
     }
 
     /**
-     * Deletes all elements in the list and sets the size to 0
+     * Deletes all elements in the collection and sets the size to 0
      */
     public void clear() {
         head = null;
-        tail = null;
         pointer = null;
         size = 0;
         pointerIndex = 0;
@@ -130,19 +181,19 @@ public class UndoRedoList<E> {
 
 
     /**
-     * @return A string representation of all elements in the list
+     * @return a string representation of all elements in the collection
      */
+    @NotNull
     public String toString() {
-        StringBuilder sb = new StringBuilder().append('[');
+        StringBuilder sb = new StringBuilder().append('{');
         Node tempHead = head;
         while (tempHead != null) {
-            sb.append(tempHead.element);
+            sb.append(String.format("%s=%s", tempHead.action.key, tempHead.action.value));
             tempHead = tempHead.next;
             if (tempHead != null) {
                 sb.append(',').append(' ');
             }
         }
-        return sb.append(']').toString();
+        return sb.append('}').toString();
     }
 }
-
