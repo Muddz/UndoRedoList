@@ -40,12 +40,12 @@ public class UndoRedoList {
     }
 
     /**
-     * Adds an element to the collection
+     * Adds an key-values pair data to the collection.
+     * Both currentValue and newValue should be of the same key identifier
      */
     public void add(@NotNull String key, @NotNull Object currentValue, @NotNull Object newValue) {
         Node currentNode = new Node(new Action(key, currentValue));
         Node newNode = new Node(new Action(key, newValue));
-
         if (head == null || pointer == head) {
             currentNode.next = newNode;
             newNode.prev = currentNode;
@@ -64,13 +64,12 @@ public class UndoRedoList {
                 pointerIndex += 2;
             }
         }
-
         size = pointerIndex;
         pointer = newNode;
     }
 
     /**
-     * @eturns the previous (@link #Action) object without moving the pointer
+     * @return the previous {@link Action} object without moving the pointer
      */
     public Action getPrevious() {
         if (pointer == null) {
@@ -80,7 +79,7 @@ public class UndoRedoList {
     }
 
     /**
-     * @eturns the next (@link #Action) object without moving the pointer
+     * @return the next {@link Action} object without moving the pointer
      */
     public Action getNext() {
         if (pointer == null) {
@@ -90,7 +89,7 @@ public class UndoRedoList {
     }
 
     /**
-     * @return the current (@link #Action) object which the pointer is pointing at
+     * @return the current {@link Action} object which the pointer is pointing at
      */
     public Action getCurrent() {
         if (pointer == null) {
@@ -102,7 +101,7 @@ public class UndoRedoList {
     /**
      * Moves the pointer one step forward
      *
-     * @return Returns the next (@link #Action) object
+     * @return Returns the next {@link Action} object
      */
     public Action redo() {
         if (pointer.next != null) {
@@ -122,7 +121,7 @@ public class UndoRedoList {
     /**
      * Moves the pointer one step backwards
      *
-     * @return Returns the previous (@link #Action) object
+     * @return Returns the previous {@link Action} object
      */
     public Action undo() {
         if (pointer.prev != null) {
