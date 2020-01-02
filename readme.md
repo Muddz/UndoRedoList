@@ -14,8 +14,8 @@ Adding on an existing <i>Head</i> element or between existing elements as shown 
 
 Each element contains of an instance of [`Action`](https://github.com/Muddz/UndoRedoList/blob/master/src/main/java/Action.java) with the field members: `String key`, `Object currentValue` and `Object newValue` which keeps record of any editings. 
 
-An example could be: `undoRedo.add(KEY_TEXT_COLOR, Color.BLACK, Color.RED); `
-Where `KEY_TEXT_COLOR` is used to identify the "kind" of data, in this case an identifiere for a text color.
+An example of this could be `undoRedo.add(KEY_TEXT_COLOR, Color.BLACK, Color.RED); `
+where `KEY_TEXT_COLOR` is used to identify the "kind" of data, in this case an identifiere for a text color.
 `Color.BLACK` which is the current color shown in the UI and `Color.RED` which is the color being changed to. 
 
 ## Performance
