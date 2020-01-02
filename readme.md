@@ -12,7 +12,7 @@ Adding on an existing <i>Head</i> element or between existing elements as shown 
 
 <img src="https://github.com/Muddz/UndoRedoList/blob/master/src/main/resources/AddBetweenElements.png" width="70%">
 
-An element contains of an instance of the `Action` [class](https://github.com/Muddz/UndoRedoList/blob/master/src/main/java/Action.java)
+An element contains of an instance of [`Action`](https://github.com/Muddz/UndoRedoList/blob/master/src/main/java/Action.java)
 
 ## Performance
 `UndoRedoList` is a linear data structure and has similar performance as Java's LinkedList.
