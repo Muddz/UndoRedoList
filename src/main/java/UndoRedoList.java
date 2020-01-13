@@ -29,7 +29,7 @@ public class UndoRedoList {
     private int pointerIndex;
     private int size;
 
-    private class Node {
+    private static class Node {
         Action action;
         Node next = null;
         Node prev = null;
@@ -44,23 +44,23 @@ public class UndoRedoList {
      * Both currentValue and newValue should be of the same key identifier
      */
     public void add(@NotNull String key, @NotNull Object currentValue, @NotNull Object newValue) {
-        Node currentNode = new Node(new Action(key, currentValue));
+        Node oldNode = new Node(new Action(key, currentValue));
         Node newNode = new Node(new Action(key, newValue));
         if (head == null || pointer == head) {
-            currentNode.next = newNode;
-            newNode.prev = currentNode;
-            head = currentNode;
+            oldNode.next = newNode;
+            newNode.prev = oldNode;
+            head = oldNode;
             pointerIndex = 2;
         } else {
-            if (pointer.action.key.equals(currentNode.action.key)) {
+            if (pointer.action.key.equals(key) || pointer.prev.action.key.equals(key)) {
                 newNode.prev = pointer;
                 pointer.next = newNode;
                 pointerIndex++;
             } else {
-                currentNode.prev = pointer;
-                pointer.next = currentNode;
-                currentNode.next = newNode;
-                newNode.prev = currentNode;
+                oldNode.next = newNode;
+                newNode.prev = oldNode;
+                pointer.next = oldNode;
+                oldNode.prev = pointer;
                 pointerIndex += 2;
             }
         }
@@ -70,6 +70,7 @@ public class UndoRedoList {
 
     /**
      * @return the previous {@link Action} object without moving the pointer
+     * @throws NoSuchElementException
      */
     public Action getPrevious() {
         if (pointer == null) {
@@ -80,6 +81,7 @@ public class UndoRedoList {
 
     /**
      * @return the next {@link Action} object without moving the pointer
+     * @throws NoSuchElementException
      */
     public Action getNext() {
         if (pointer == null) {
@@ -90,6 +92,7 @@ public class UndoRedoList {
 
     /**
      * @return the current {@link Action} object which the pointer is pointing at
+     * @throws NoSuchElementException
      */
     public Action getCurrent() {
         if (pointer == null) {
@@ -101,8 +104,10 @@ public class UndoRedoList {
     /**
      * Moves the pointer one step forward
      *
-     * @return Returns the next {@link Action} object
+     * @return Returns the next {@link Action} object or null if next object doesn't exists
      */
+
+    @NotNull
     public Action redo() {
         if (pointer.next != null) {
             Node tempPointer = pointer;
@@ -111,6 +116,7 @@ public class UndoRedoList {
             if (tempPointer.action.key.equals(pointer.action.key)) {
                 return pointer.action;
             } else if (pointer.next != null) {
+                pointerIndex++;
                 pointer = pointer.next;
                 return pointer.action;
             }
@@ -121,8 +127,10 @@ public class UndoRedoList {
     /**
      * Moves the pointer one step backwards
      *
-     * @return Returns the previous {@link Action} object
+     * @return Returns the previous {@link Action} object or null if next object doesn't exists
      */
+
+    @NotNull
     public Action undo() {
         if (pointer.prev != null) {
             Node tempPointer = pointer;
@@ -131,6 +139,7 @@ public class UndoRedoList {
             if (tempPointer.action.key.equals(pointer.action.key)) {
                 return pointer.action;
             } else if (pointer.prev != null) {
+                pointerIndex--;
                 pointer = pointer.prev;
                 return pointer.action;
             }
@@ -176,17 +185,18 @@ public class UndoRedoList {
         pointerIndex = 0;
     }
 
+
     /**
      * @return a string representation of all elements in the collection
      */
     @NotNull
     public String toString() {
         StringBuilder sb = new StringBuilder().append('{');
-        Node tempHead = head;
-        while (tempHead != null) {
-            sb.append(String.format("%s=%s", tempHead.action.key, tempHead.action.value));
-            tempHead = tempHead.next;
-            if (tempHead != null) {
+        Node tempNode = head;
+        while (tempNode != null) {
+            sb.append(String.format("%s=%s", tempNode.action.key, tempNode.action.value));
+            tempNode = tempNode.next;
+            if (tempNode != null) {
                 sb.append(',').append(' ');
             }
         }

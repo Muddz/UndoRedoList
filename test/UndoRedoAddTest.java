@@ -13,51 +13,102 @@ class UndoRedoAddTest {
     void setUp() {
         undoRedo = new UndoRedoList();
         undoRedo.add(KEY_BACKGROUND_COLOR, Color.WHITE, Color.RED);
-        undoRedo.add(KEY_BACKGROUND_COLOR, Color.RED, Color.BLUE);
+        undoRedo.add(KEY_BACKGROUND_COLOR, Color.RED, Color.GREEN);
+        undoRedo.add(KEY_BACKGROUND_COLOR, Color.GREEN, Color.BLUE);
         undoRedo.add(KEY_BACKGROUND_COLOR, Color.BLUE, Color.YELLOW);
-        undoRedo.add(KEY_BACKGROUND_COLOR, Color.YELLOW, Color.MAGENTA);
     }
 
 
     @Test
-    public void addSameKeyOnExistingHeadTest() {
+    public void addOnExistingHeadTest() {
         while (undoRedo.canUndo()) {
             undoRedo.undo();
         }
-        undoRedo.add(KEY_BACKGROUND_COLOR, undoRedo.getCurrent().value, Color.BLACK);
-
-        Assertions.assertFalse(undoRedo.canRedo());
-        Assertions.assertNull(undoRedo.redo());
-        Assertions.assertEquals(Color.BLACK, undoRedo.getCurrent().value);
-        Assertions.assertEquals(Color.WHITE, undoRedo.getPrevious().value);
+        undoRedo.add(KEY_BACKGROUND_COLOR, Color.YELLOW, Color.BLACK);
+        System.out.println(undoRedo.toString());
         Assertions.assertEquals(2, undoRedo.getSize());
     }
 
     @Test
-    public void addSameKeyBetweenExistingElementsTest() {
-        undoRedo.undo();
-        undoRedo.undo();
-        undoRedo.add(KEY_BACKGROUND_COLOR, undoRedo.getCurrent().value, Color.BLACK);
-
-        Assertions.assertFalse(undoRedo.canRedo());
-        Assertions.assertNull(undoRedo.redo());
-        Assertions.assertTrue(undoRedo.canUndo());
-        Assertions.assertEquals(Color.BLACK, undoRedo.getCurrent().value);
-        Assertions.assertEquals(Color.BLUE, undoRedo.getPrevious().value);
-        Assertions.assertEquals(4, undoRedo.getSize());
+    public void addOnExistingElementBehindHeadTest() {
+        while (undoRedo.canUndo()) {
+            undoRedo.undo();
+        }
+        undoRedo.redo();
+        undoRedo.add(KEY_BACKGROUND_COLOR, Color.YELLOW, Color.BLACK);
+        System.out.println(undoRedo.toString());
+        Assertions.assertEquals(3, undoRedo.getSize());
     }
 
     @Test
-    public void addDifferentKeyBetweenExistingElementsTest() {
-        undoRedo.undo();
-        undoRedo.undo();
-        undoRedo.add(KEY_TEXT_COLOR, Color.BLACK, Color.WHITE);
+    public void addOnExistingTailTest() {
+        undoRedo.add(KEY_BACKGROUND_COLOR, Color.YELLOW, Color.BLACK);
+        System.out.println(undoRedo.toString());
+        Assertions.assertEquals(6, undoRedo.getSize());
+    }
 
-        Assertions.assertFalse(undoRedo.canRedo());
-        Assertions.assertNull(undoRedo.redo());
-        Assertions.assertTrue(undoRedo.canUndo());
-        Assertions.assertEquals(Color.WHITE, undoRedo.getCurrent().value);
-        Assertions.assertEquals(Color.BLACK, undoRedo.getPrevious().value);
+
+    @Test
+    public void addNewKeyOnExistingHeadTest() {
+        while (undoRedo.canUndo()) {
+            undoRedo.undo();
+        }
+        undoRedo.add(KEY_TEXT_COLOR, Color.WHITE, Color.BLACK);
+        System.out.println(undoRedo.toString());
+        Assertions.assertEquals(2, undoRedo.getSize());
+    }
+
+    @Test
+    public void addNewKeyOnExistingElementBehindHeadTest() {
+        while (undoRedo.canUndo()) {
+            undoRedo.undo();
+        }
+        undoRedo.redo();
+        undoRedo.add(KEY_TEXT_COLOR, Color.WHITE, Color.BLACK);
+        System.out.println(undoRedo.toString());
+        Assertions.assertEquals(4, undoRedo.getSize());
+    }
+
+
+    @Test
+    public void addNewKeyAtTailTest() {
+        undoRedo.add(KEY_TEXT_COLOR, Color.WHITE, Color.BLACK);
+        System.out.println(undoRedo.toString());
+        Assertions.assertEquals(7, undoRedo.getSize());
+    }
+
+    @Test
+    public void addNewKeyBetweenExistingElementsTest() {
+        undoRedo.undo();
+        undoRedo.undo();
+        undoRedo.add(KEY_TEXT_COLOR, Color.WHITE, Color.BLACK);
+        System.out.println(undoRedo.toString());
         Assertions.assertEquals(5, undoRedo.getSize());
     }
+
+    @Test
+    public void addNewKeyOnDifferentExistingKeyTest() {
+        undoRedo.add(KEY_TEXT_COLOR, Color.WHITE, Color.BLACK);
+        undoRedo.undo();
+        undoRedo.add(KEY_BACKGROUND_COLOR, Color.YELLOW, Color.GREY);
+
+        Action action = undoRedo.undo();
+        Assertions.assertEquals(Color.YELLOW, action.value);
+
+        action = undoRedo.undo();
+        Assertions.assertEquals(Color.BLUE, action.value);
+    }
+
+
+    @Test
+    public void addNewKeyBeforeDifferentExistingKeyTest() {
+        undoRedo.add(KEY_TEXT_COLOR, Color.BLACK, Color.WHITE);
+        undoRedo.undo();
+        undoRedo.undo();
+        undoRedo.add(KEY_TEXT_COLOR, Color.BLACK, Color.GREEN);
+        System.out.println(undoRedo.toString());
+        Assertions.assertEquals(6, undoRedo.getSize());
+    }
+
+
 }
