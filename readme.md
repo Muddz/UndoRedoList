@@ -4,9 +4,9 @@ An undo-redo data structure based on the concepts of `DoublyLinkedList` and beha
 
 ## How it works
 
-The list adds nodes in sequential order as a `LinkedList` would do when the pointer is standing at end of the list.
+The list adds nodes in sequential order as a `LinkedList` would do when the pointer is at the end of the list.
 
-Adding on an existing <i>Head</i> node or between existing nodes as shown in the example below will result in all nodes to the right of and inclusive *node 2* being deleted and the new *node 6* taking the end-position of the list
+If the pointer is on the head node or between existing nodes as shown below when adding a new entry, all nodes to the right of the pointer inclusive the node pointed at, will be replaced with the new nodeæ.
 
 <img src="https://github.com/Muddz/UndoRedoList/blob/master/src/main/resources/AddBetweenElements.png" width="70%">
 
