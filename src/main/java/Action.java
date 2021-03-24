@@ -1,4 +1,4 @@
-import com.sun.istack.internal.Nullable;
+import org.jetbrains.annotations.Nullable;
 
 public class Action {
     public String key;

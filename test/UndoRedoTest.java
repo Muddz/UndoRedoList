@@ -1,40 +1,71 @@
-import javafx.scene.paint.Color;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.awt.*;
+
 public class UndoRedoTest {
 
-    private static final String KEY_TEXT_COLOR = "KEY_TEXT_COLOR";
     private static final String KEY_BACKGROUND_COLOR = "KEY_BACKGROUND_COLOR";
     private UndoRedoList undoRedo;
 
     @BeforeEach
     public void setUp() {
         undoRedo = new UndoRedoList();
-        undoRedo.add(KEY_TEXT_COLOR, Color.BLACK, Color.RED);
-        undoRedo.add(KEY_TEXT_COLOR, Color.RED, Color.BLUE);
-        undoRedo.add(KEY_BACKGROUND_COLOR, Color.WHITE, Color.RED);
-        undoRedo.add(KEY_BACKGROUND_COLOR, Color.RED, Color.BLACK);
+        undoRedo.add(KEY_BACKGROUND_COLOR, Color.RED);
+        undoRedo.add(KEY_BACKGROUND_COLOR, Color.GREEN);
+        undoRedo.add(KEY_BACKGROUND_COLOR, Color.BLUE);
     }
+
+
+    @Test
+    public void testAddOnHead() {
+        while (undoRedo.canUndo()) {
+            undoRedo.undo();
+        }
+        undoRedo.add(KEY_BACKGROUND_COLOR, Color.BLACK);
+        Assertions.assertEquals(2, undoRedo.getSize());
+
+        Action action = undoRedo.getCurrent();
+        Assertions.assertEquals(Color.BLACK, action.value);
+
+        action = undoRedo.undo();
+        Assertions.assertEquals(Color.RED, action.value);
+
+        Assertions.assertFalse(undoRedo.canUndo());
+        undoRedo.redo();
+        Assertions.assertFalse(undoRedo.canRedo());
+    }
+
+    @Test
+    public void testAddInBetween() {
+        undoRedo.undo();
+        undoRedo.add(KEY_BACKGROUND_COLOR, Color.BLACK);
+        Assertions.assertEquals(3, undoRedo.getSize());
+
+        Action action = undoRedo.getCurrent();
+        Assertions.assertEquals(Color.BLACK, action.value);
+
+        Assertions.assertTrue(undoRedo.canUndo());
+        Assertions.assertFalse(undoRedo.canRedo());
+
+        action = undoRedo.undo();
+        Assertions.assertEquals(Color.GREEN, action.value);
+
+        action = undoRedo.undo();
+        Assertions.assertEquals(Color.RED, action.value);
+    }
+
 
     @Test
     public void testUndo() {
         Action action = undoRedo.undo();
         Assertions.assertEquals(KEY_BACKGROUND_COLOR, action.key);
-        Assertions.assertEquals(Color.RED, action.value);
+        Assertions.assertEquals(Color.GREEN, action.value);
 
         action = undoRedo.undo();
         Assertions.assertEquals(KEY_BACKGROUND_COLOR, action.key);
-        Assertions.assertEquals(Color.WHITE, action.value);
-
-        action = undoRedo.undo();
-        Assertions.assertEquals(KEY_TEXT_COLOR, action.key);
         Assertions.assertEquals(Color.RED, action.value);
-
-        action = undoRedo.undo();
-        Assertions.assertEquals(KEY_TEXT_COLOR, action.key);
-        Assertions.assertEquals(Color.BLACK, action.value);
     }
 
     @Test
@@ -44,20 +75,18 @@ public class UndoRedoTest {
         }
 
         Action action = undoRedo.redo();
-        Assertions.assertEquals(KEY_TEXT_COLOR, action.key);
-        Assertions.assertEquals(Color.RED, action.value);
+        Assertions.assertEquals(KEY_BACKGROUND_COLOR, action.key);
+        Assertions.assertEquals(Color.GREEN, action.value);
 
         action = undoRedo.redo();
-        Assertions.assertEquals(KEY_TEXT_COLOR, action.key);
+        Assertions.assertEquals(KEY_BACKGROUND_COLOR, action.key);
         Assertions.assertEquals(Color.BLUE, action.value);
 
-        action = undoRedo.redo();
-        Assertions.assertEquals(KEY_BACKGROUND_COLOR, action.key);
-        Assertions.assertEquals(Color.RED, action.value);
+    }
 
-        action = undoRedo.redo();
-        Assertions.assertEquals(KEY_BACKGROUND_COLOR, action.key);
-        Assertions.assertEquals(Color.BLACK, action.value);
+    @Test
+    public void testSize() {
+        Assertions.assertEquals(3, undoRedo.getSize());
     }
 
     @Test
@@ -82,6 +111,6 @@ public class UndoRedoTest {
     @Test
     public void testGetCurrentValue() {
         Action action = undoRedo.getCurrent();
-        Assertions.assertEquals(Color.BLACK, action.value);
+        Assertions.assertEquals(Color.BLUE, action.value);
     }
 }

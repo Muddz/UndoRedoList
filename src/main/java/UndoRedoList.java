@@ -1,4 +1,5 @@
-import com.sun.istack.internal.NotNull;
+
+import org.jetbrains.annotations.NotNull;
 
 import java.util.NoSuchElementException;
 
@@ -26,6 +27,7 @@ public class UndoRedoList {
 
     private Node head;
     private Node pointer;
+    private Node oldNode;
     private int pointerIndex;
     private int size;
 
@@ -43,30 +45,27 @@ public class UndoRedoList {
      * Adds an key-values pair data to the collection.
      * Both currentValue and newValue should be of the same key identifier
      */
-    public void add(@NotNull String key, @NotNull Object currentValue, @NotNull Object newValue) {
-        Node oldNode = new Node(new Action(key, currentValue));
-        Node newNode = new Node(new Action(key, newValue));
-        if (head == null || pointer == head) {
+    public void add(@NotNull String key, @NotNull Object value) {
+        Node newNode = new Node(new Action(key, value));
+        if (head == null) {
+            head = newNode;
+        } else if (pointer == head) {
+            head.next = newNode;
+            newNode.prev = head;
+        } else if (pointer.next == null) {
             oldNode.next = newNode;
             newNode.prev = oldNode;
-            head = oldNode;
-            pointerIndex = 2;
-        } else {
-            if (pointer.action.key.equals(key) || pointer.prev.action.key.equals(key)) {
-                newNode.prev = pointer;
-                pointer.next = newNode;
-                pointerIndex++;
-            } else {
-                oldNode.next = newNode;
-                newNode.prev = oldNode;
-                pointer.next = oldNode;
-                oldNode.prev = pointer;
-                pointerIndex += 2;
-            }
+        } else if (pointer.prev != null) {
+            oldNode = pointer;
+            oldNode.next = newNode;
+            newNode.prev = oldNode;
         }
+        pointerIndex = (pointer == head) ? 2 : pointerIndex + 1;
         size = pointerIndex;
         pointer = newNode;
+        oldNode = newNode;
     }
+
 
     /**
      * @return the previous {@link Action} object without moving the pointer
