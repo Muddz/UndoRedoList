@@ -1,12 +1,12 @@
 # UndoRedoList
 
-An undo-redo data structure based on the concepts of `DoublyLinkedList` and behaves exactly the same way as undo-redo features do in Photoshop and Microsoft Word. [Regret](https://github.com/Muddz/Regret) an Android library also uses this data structure.
+An undo-redo data structure based on the concepts of DoublyLinkedList and behaves exactly the same way as undo-redo features do in Photoshop and Microsoft Word. [Regret](https://github.com/Muddz/Regret) an Android library also uses this data structure.
 
 ## How it works
 
-The list adds nodes in sequential order as a `LinkedList` would do when the pointer is at the end of the list.
+The list adds nodes in sequential order as a LinkedList would do when the pointer is at the end of the list.
 
-If the pointer is on the head node or between existing nodes as shown below when adding a new entry, all nodes to the right of the pointer inclusive the node pointed at, will be replaced with the new nodeæ.
+If the pointer is on the head node or between existing nodes as shown below when adding a new entry, all nodes to the right of the pointer inclusive the node pointed at, will be replaced with the new node.
 
 <img src="https://github.com/Muddz/UndoRedoList/blob/master/src/main/resources/AddBetweenElements.png" width="70%">
 
@@ -16,7 +16,7 @@ An example of this could be `undoRedo.add(KEY_TEXT_COLOR, Color.RED);`
 where `KEY_TEXT_COLOR` is used to identify the type of data and `Color.BLACK` for the actual value.
 
 ## Performance
-`UndoRedoList` is a linear data structure and has similar performance as Java's LinkedList.
+UndoRedoList is a linear data structure and has similar performance as Java's LinkedList.
 The following is the *time-complexity* for the important methods in `UndoRedoList`
 
 - `add()` is always *O(1)* regardless of the pointer position
