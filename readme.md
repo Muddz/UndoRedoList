@@ -12,7 +12,7 @@ Adding on an existing <i>Head</i> node or between existing nodes as shown in the
 
 Each node contains of an instance of [Action](https://github.com/Muddz/UndoRedoList/blob/master/src/main/java/Action.java) with field members: `String key` and `Object value` used for holding the key-value of an entry. 
 
-An example of this could be `undoRedo.add(KEY_TEXT_COLOR, Color.RED); `
+An example of this could be `undoRedo.add(KEY_TEXT_COLOR, Color.RED);`
 where `KEY_TEXT_COLOR` is used to identify the type of data and `Color.BLACK` for the actual value.
 
 ## Performance
