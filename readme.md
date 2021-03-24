@@ -1,6 +1,6 @@
 # UndoRedoList
 
-An undo-redo data structure based on the concepts of `DoublyLinkedList` and behaves exactly the same way as undo-redo features do in Photoshop and Microsoft Word.  [Regret](https://github.com/Muddz/Regret) an Android library is uses this data structure.
+An undo-redo data structure based on the concepts of `DoublyLinkedList` and behaves exactly the same way as undo-redo features do in Photoshop and Microsoft Word. [Regret](https://github.com/Muddz/Regret) an Android library also uses this data structure.
 
 ## How it works
 
