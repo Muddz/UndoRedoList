@@ -105,8 +105,6 @@ public class UndoRedoList {
      *
      * @return Returns the next {@link Action} object or null if next object doesn't exists
      */
-
-    @NotNull
     public Action redo() {
         if (pointer.next != null) {
             Node tempPointer = pointer;
@@ -128,8 +126,6 @@ public class UndoRedoList {
      *
      * @return Returns the previous {@link Action} object or null if next object doesn't exists
      */
-
-    @NotNull
     public Action undo() {
         if (pointer.prev != null) {
             Node tempPointer = pointer;
@@ -184,11 +180,9 @@ public class UndoRedoList {
         pointerIndex = 0;
     }
 
-
     /**
      * @return a string representation of all elements in the collection
      */
-    @NotNull
     public String toString() {
         StringBuilder sb = new StringBuilder().append('{');
         Node tempNode = head;
