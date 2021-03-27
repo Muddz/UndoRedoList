@@ -1,5 +1,6 @@
 
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.NoSuchElementException;
 
@@ -27,7 +28,6 @@ public class UndoRedoList {
 
     private Node head;
     private Node pointer;
-    private Node oldNode;
     private int pointerIndex;
     private int size;
 
@@ -45,27 +45,30 @@ public class UndoRedoList {
      * Adds an key-values pair data to the collection.
      * Both currentValue and newValue should be of the same key identifier
      */
-    public void add(@NotNull String key, @NotNull Object value) {
-        Node newNode = new Node(new Action(key, value));
-        if (head == null) {
-            head = newNode;
-        } else if (pointer == head) {
-            head.next = newNode;
-            newNode.prev = head;
-        } else if (pointer.next == null) {
+    public void add(@NotNull String key, @NotNull Object currentValue, @NotNull Object newValue) {
+        Node oldNode = new Node(new Action(key, currentValue));
+        Node newNode = new Node(new Action(key, newValue));
+        if (head == null || pointer == head) {
             oldNode.next = newNode;
             newNode.prev = oldNode;
-        } else if (pointer.prev != null) {
-            oldNode = pointer;
-            oldNode.next = newNode;
-            newNode.prev = oldNode;
+            head = oldNode;
+            pointerIndex = 2;
+        } else {
+            if (pointer.action.key.equals(key) || pointer.prev.action.key.equals(key)) {
+                newNode.prev = pointer;
+                pointer.next = newNode;
+                pointerIndex++;
+            } else {
+                oldNode.next = newNode;
+                newNode.prev = oldNode;
+                pointer.next = oldNode;
+                oldNode.prev = pointer;
+                pointerIndex += 2;
+            }
         }
-        pointerIndex = (pointer == head) ? 2 : pointerIndex + 1;
         size = pointerIndex;
         pointer = newNode;
-        oldNode = newNode;
     }
-
 
     /**
      * @return the previous {@link Action} object without moving the pointer
@@ -105,6 +108,7 @@ public class UndoRedoList {
      *
      * @return Returns the next {@link Action} object or null if next object doesn't exists
      */
+    @Nullable
     public Action redo() {
         if (pointer.next != null) {
             Node tempPointer = pointer;
@@ -126,6 +130,7 @@ public class UndoRedoList {
      *
      * @return Returns the previous {@link Action} object or null if next object doesn't exists
      */
+    @Nullable
     public Action undo() {
         if (pointer.prev != null) {
             Node tempPointer = pointer;
@@ -179,6 +184,7 @@ public class UndoRedoList {
         size = 0;
         pointerIndex = 0;
     }
+
 
     /**
      * @return a string representation of all elements in the collection
