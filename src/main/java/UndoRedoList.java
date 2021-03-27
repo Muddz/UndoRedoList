@@ -2,6 +2,7 @@
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.ArrayList;
 import java.util.NoSuchElementException;
 
 /*
@@ -72,7 +73,7 @@ public class UndoRedoList {
 
     /**
      * @return the previous {@link Action} object without moving the pointer
-     * @throws NoSuchElementException
+     * @throws NoSuchElementException if the previous object doesn't exist
      */
     public Action getPrevious() {
         if (pointer == null) {
@@ -83,7 +84,7 @@ public class UndoRedoList {
 
     /**
      * @return the next {@link Action} object without moving the pointer
-     * @throws NoSuchElementException
+     * @throws NoSuchElementException if the next object doesn't exist
      */
     public Action getNext() {
         if (pointer == null) {
@@ -94,7 +95,7 @@ public class UndoRedoList {
 
     /**
      * @return the current {@link Action} object which the pointer is pointing at
-     * @throws NoSuchElementException
+     * @throws NoSuchElementException if the current object doesn't exist because the list is empty
      */
     public Action getCurrent() {
         if (pointer == null) {
@@ -105,8 +106,8 @@ public class UndoRedoList {
 
     /**
      * Moves the pointer one step forward
-     *
-     * @return Returns the next {@link Action} object or null if next object doesn't exists
+     * @return Returns the next {@link Action} object
+     * @throws NoSuchElementException if the next object doesn't exist
      */
     @Nullable
     public Action redo() {
@@ -122,14 +123,15 @@ public class UndoRedoList {
                 return pointer.action;
             }
         }
-        return null;
+        throw new NoSuchElementException();
     }
 
     /**
      * Moves the pointer one step backwards
-     *
      * @return Returns the previous {@link Action} object or null if next object doesn't exists
+     * @throws NoSuchElementException if the previous object doesn't exist
      */
+
     @Nullable
     public Action undo() {
         if (pointer.prev != null) {
@@ -144,7 +146,7 @@ public class UndoRedoList {
                 return pointer.action;
             }
         }
-        return null;
+        throw new NoSuchElementException();
     }
 
     /**
@@ -184,7 +186,6 @@ public class UndoRedoList {
         size = 0;
         pointerIndex = 0;
     }
-
 
     /**
      * @return a string representation of all elements in the collection
