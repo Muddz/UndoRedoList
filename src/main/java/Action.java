@@ -1,8 +1,8 @@
 import org.jetbrains.annotations.Nullable;
 
 public class Action {
-    public String key;
-    public Object value;
+    public final String key;
+    public final Object value;
 
     public Action(String key, Object value) {
         this.key = key;

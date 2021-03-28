@@ -47,8 +47,8 @@ public class UndoRedoList {
      * Both currentValue and newValue should be of the same key identifier
      */
     public void add(@NotNull String key, @NotNull Object currentValue, @NotNull Object newValue) {
-        Node oldNode = new Node(new Action(key, currentValue));
-        Node newNode = new Node(new Action(key, newValue));
+        final Node oldNode = new Node(new Action(key, currentValue));
+        final Node newNode = new Node(new Action(key, newValue));
         if (head == null || pointer == head) {
             oldNode.next = newNode;
             newNode.prev = oldNode;
@@ -106,6 +106,7 @@ public class UndoRedoList {
 
     /**
      * Moves the pointer one step forward
+     *
      * @return Returns the next {@link Action} object
      * @throws NoSuchElementException if the next object doesn't exist
      */
@@ -128,6 +129,7 @@ public class UndoRedoList {
 
     /**
      * Moves the pointer one step backwards
+     *
      * @return Returns the previous {@link Action} object or null if next object doesn't exists
      * @throws NoSuchElementException if the previous object doesn't exist
      */
